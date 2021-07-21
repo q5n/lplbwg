@@ -1,5 +1,5 @@
-# lplbwg
-Learning programming language by writing games
+# lplbwg (Learning programming language by writing games)
+通过编写游戏来学习编程语言
 
 1. 环境 
 系统: win10
