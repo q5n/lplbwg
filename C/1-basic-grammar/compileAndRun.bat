@@ -1,4 +1,5 @@
 @echo off
+echo ...
 cd /d %~pd0
 set _NotNeedNewCmd_=1
 set srcCharset="utf-8"
