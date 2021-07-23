@@ -79,9 +79,14 @@ int main(void) /* 函数: 返回类型 函数名(参数[这里是void]) */
 
 自己写了个脚本([compileAndRun.bat](compileAndRun.bat))来编译执行这个程序：
 
-![image-20210722164714115](D:\c_projects\lplbwg\C\1-basic-grammar\img\2-1-compileAndRun.png)
+![2-1-compileAndRun.png](img\2-1-compileAndRun.png)
 
 ## 3.注意
 
 1. 每次用到库函数，都会用#include指令包含ANSI/ISO标准指定的头文件
 2. main函数必须加(void),返回值必须是int
+
+
+
+
+

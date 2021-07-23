@@ -1,0 +1,136 @@
+PE(portable executalbe)格式
+    是一种用于可执行文件、目标文件和动态链接库的文件格式
+    PE文件格式封装了Windows操作系统加载可执行程序代码时所必需的一些信息。这些信息包括动态链接库、API导入和导出表、资源管理数据和线程局部存储数据
+    PE格式是由Unix中的COFF格式修改而来的。在Windows开发环境中，PE格式也称为PE/COFF格式。
+        COFF(共同对象文件格式（英语：Common Object File Format，缩写为COFF），又称通用目标文件格式)
+
+
+32位cpu寻址能力是2^32  2^2* 2^30 =2^2G =4G
+    B K M G T P E 
+
+
+1.虚拟内存地址(virtual Address,VA) 32bit
+    VA = 进程的基地址 + 相对虚拟内存地址
+
+2.相对虚拟内存地址(reverse virtual Address,RVA) 
+    一个进程被加载到虚拟内存空间后，其相关的动态链接库也会被加载
+        这些加载到进程地址空间的文件称为模块，每个模块都有一个基地址
+    RVA是相对模块而言的，VA是相对整个地址空间而言的
+
+3.文件偏移地址（File offset Address,FOA）
+    与内存无关，是指文件中某个位置距离文件头的偏移
+4.特殊地址
+    从某个特定位置算起的偏移地址
+
+
+PE数据结构中的指针：
+    如果数据结构中的某个字段存储的值为一个地址，那么这个字段就是一个指针
+
+数据目录
+    PE中有一个数据结构称为数据目录，其中记录了所有可能的数据类型，这些类型中，目前已定义的有15种
+    包括：导出表、导入表、资源表、异常表、属性证书表，重定位表，调试数据、Architecture、Global Ptr、
+    线程局部存储、加载配置表、绑定导入表、IAT、延迟导入表、CLR运行时头部
+
+节（section)
+    存放不同类型数据（代码、数据、常量、资源）的基本单元，不同节不同访问权限
+    节可能最终占用一个或多个页面，
+
+
+对齐
+    1.内存对齐，对内存属性的设置以页为单位，内存种对齐单位至少是一个页的大小
+        32位winXp页大小位4KB
+    2.文件对齐
+        磁盘文件通常会以一个物理扇区的大小作为对齐粒度，512Byte 即 200h
+    3.资源数据对齐
+        资源字节码部分要求4字节对齐，
+
+Unicode字符串
+    每个字符均位双字节
+    不像ANSI字符串那样保证用字符'\0'结束
+        ANSI(兼容ASCII的一系列编码集，用Windows Code Page区分,GBK代码页936)
+
+    PE格式中，涉及字符串部分均采用ANSI字符串，
+    然而在资源表中对菜单名、对话框标题等的描述全用Unicode字符串
+
+PE文件结构
+    1.16位系统下的PE结构
+        文件头(DOS MZ头)， 指令代码(DOS Stub)
+    
+    2.
+    IMAGE_DOS_HEADER (Dos头)
+        ...
+        ...
+        LONG AddressOfNewExeHeader（PE头文件偏移）
+    IMAGE_DOS_STUB
+        ...
+    IMAGE_NT_HEADERS （PE头)
+        PE标识
+        IMAGE_FILE_HEADER
+            ...
+        IMAGE_OPTIONAL_HEADER32 扩展PE头
+            ...
+    IMAGE_SECTION_HEADER (节表头）
+        ...
+    IMAGE_SECTION_DATA (节数据）
+        ...
+
+
+标准PE头：IMAGE_FILE_HEADER
+    ...
+    WORD NumberOfSections   节的数量
+    WORD SizeOfOptionalHeader   扩展头结构长度
+    FILE_CHARACTERISTICS    16bit,文件属性,按位解析(执行映像，32位机器，DLL,SYSTEM,)
+
+扩展PE头:IMAGE_OPTIONAL_HEADER32 
+    OPTIONAL_MAGIC  PE32(10Bh)
+    ...
+    SizeOfCode        所有含代码的节的总大小
+    SizeOfInitializedData     所有含已初始化数据的节的总大小
+    AddressOfEntryPoint   程序入口RVA
+    ...
+    BaseOfCode      代码节起始RVA
+    BaseOfData      数据节起始
+    ...
+    SizeOfImage     内存中整个PE映像尺寸
+    ...
+    DLL_CHARACTERISTICS dll文件特征
+    SizeOfStackReserve    初始化栈大小(1M起)
+    SizeOfHeapReserve     初始化保留堆大小(1M起)
+    
+    NumberOfRvaAndSizes 数据目录目录结构的项目数量
+    IMAGE_DATA_DIRECTORY_ARRAY  数据目录
+        ...
+
+节表头项：MAGE_SECTION_HEADER
+    Name    节名
+    union Misc
+        DWORD PhysicalAddress
+        DWORD VirtualSize       节区尺寸大小
+    DWORD VirtualAddress    节区的RVA
+    DWORD SizeOfRawData     在文件中对齐后的尺寸
+    DWORD PointerToRawData  文中的偏移
+        ...
+
+
+.rsrc资源数据
+.idata导入数据
+.edata导出数据
+.pdata异常数据
+.reloc基址重定位数据
+.debug调试数据
+.tls线程本地存储数据
+.cormeta CLR数据
+
+
+struct IMAGE_DATA_DIRECTORY Import
+struct IMAGE_DATA_DIRECTORY BaseRelocationTable
+struct IMAGE_DATA_DIRECTORY DebugDirectory
+struct IMAGE_DATA_DIRECTORY LoadConfigurationDirectory
+struct IMAGE_DATA_DIRECTORY ImportAddressTable
+
+导入地址表   IAT
+
+
+导入表，导入函数地址表，绑定导入表，延迟加载导入表
+    PE调用多少外来函数，处理哪些动态链接库，
+    
