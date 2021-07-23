@@ -1,7 +1,7 @@
 @echo off
-title vctool
-prompt [$P]$_$G
-if "%1" == "utf8" ( chcp 65001
+title vcdev_x86
+@rem prompt [$P]$_$G
+if "%1" == "utf-8" ( chcp 65001
 )else if "%1" == "big5" ( chcp 950
 )else if "%1" == "gb2312" ( chcp 936
 )else if "%1" == "gbk" ( chcp 936
@@ -32,4 +32,7 @@ set "INCLUDE=%VCToolsInstallDir%include;%_UcrtInclude%ucrt;%_UcrtInclude%shared;
 @rem 配置LIB环境变量，方便链接
 set "LIB=%VCToolsInstallDir%lib\%HOST_ARCH%;%_UcrtLib%ucrt\%HOST_ARCH%;%_UcrtLib%um\%HOST_ARCH%"
 
-cmd /k
+
+if "%_NotNeedNewCmd_%" == "" (
+    cmd /k
+)
