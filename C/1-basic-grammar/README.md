@@ -65,11 +65,12 @@ c语言编译过程：
 ```c
 #include <stdio.h> //引入文件头
 
-int main(void) /* 函数: 返回类型 函数名(参数[这里是void]) */
+int main(void) /* 函数头: 返回类型 函数名(参数[这里是void]) */
 {
+    printf("Hello world!\n"); //调用stdio标准库里的printf函数, \n是换行符
+
     int x; /* 定义一个名为x的变量 */
     x = 1; /* 为x赋一个值 */ 
-    printf("Hello world!\n"); //调用stdio标准库里的printf函数, \n是换行符
     printf("x=%d\n",x); //再次调用stdio标准库里的printf函数，并传参数
     return 0; //返回一个数
 }
@@ -87,6 +88,47 @@ int main(void) /* 函数: 返回类型 函数名(参数[这里是void]) */
 2. main函数必须加(void),返回值必须是int
 
 
+
+## 三、数据类型
+
+关键字：int、short、long、unsigned、char、float、double、_Bool、_Complex、_Imaginary
+运算符：sizeof()
+函数：scanf()
+
+
+
+C语言数据类型关键字：
+
+| K&R C    | C90    | C99               |
+| -------- | ------ | ----------------- |
+| int      | signed | _Bool(true/false) |
+| long     | void   | _Complex(复数)    |
+| unsigned |        | _Imaginary(虚数)  |
+| char     |        |                   |
+| float    |        |                   |
+| double   |        |                   |
+
+1. 整数
+
+   > 1. 声明变量   int a,b,c;
+   >
+   > 2. 初始化变量  int i=1,j=2;
+   >
+   > 3. printf int占位符%d  
+   >
+   >    如：printf("%d",i) 
+   >
+   > 4. 字面量：
+   >
+   >    十进制  7,    8,  9,   10,  15,  16
+   >
+   >    八进制  07,  10, 11, 12,  17, 20 
+   >
+   >    十六进制  0x7, 0X8 , 0x9, 0XA, 0XF, 0x10
+   >
+   >    printf 显示八进制占位符： %o ,带0前缀 %#o
+   >
+   >     printf 显示十六进制占位符： %x ,  %X,  带0x前缀 %#x,%#X
 
 
 

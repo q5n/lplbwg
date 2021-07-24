@@ -1,14 +1,21 @@
 @echo off
+
 echo ...
 cd /d %~pd0
 set _NotNeedNewCmd_=1
 set srcCharset="utf-8"
 call "..\0-prepare\vcdev_x86.bat" %srcCharset% >nul
 SETLOCAL ENABLEDELAYEDEXPANSION
+
+
+
 set index=0
 echo ------- 准备编译, 搜索【src】目录下的C源文件： -------
 for /f "tokens=*" %%i in ('dir /o-d /b src\*.c') do (
     set /A index += 1
+    if /i !index! GTR 10 (
+        goto :chooseSrc
+    )
     echo  [!index!]: %%i
 )
 if "%index%" == "0" (
@@ -16,6 +23,11 @@ if "%index%" == "0" (
     goto :end
 )
 echo.
+
+set runLast=%~1
+if "-runLast" == "%runLast%" (
+    set index=1
+)
 
 :chooseSrc
 if not "%index%" == "1" (
@@ -49,15 +61,17 @@ echo ------- 准备完毕,即将编译:"%srcFile%" -------
 echo.
 
 echo -------------- 开始编译:[%srcFile%] --------------
-ping -n 2 127.0.1>nul
-cl.exe /Wall  /source-charset:%srcCharset% "src\%srcFile%" /Fo"target\%srcPreName%" /Fe"target\%srcPreName%" /std:c11 /nologo /link /SUBSYSTEM:CONSOLE
+@rem ping -n 2 127.0.1>nul
+set _CL_OPT=/Wall  /source-charset:%srcCharset% /execution-charset:%srcCharset%  "src\%srcFile%" /Fo"target\%srcPreName%" /Fe"target\%srcPreName%" /std:c11 /nologo /link /SUBSYSTEM:CONSOLE
+echo 编译参数:%_CL_OPT%
+cl.exe %_CL_OPT%
 echo --------------------- 编译结束 ---------------------
 echo.
 
 if "%ERRORLEVEL%" == "0" (
 echo -------------- 开始执行:"target\%srcPreName%.exe" --------------
-ping -n 2 127.0.1>nul
-call "target\%srcPreName%"
+@rem ping -n 2 127.0.1>nul
+"target\%srcPreName%"
 echo --------------------- 执行完毕，按任意键退出！ ---------------------
 ) else (
 echo ======== 编译失败！！！ ========
