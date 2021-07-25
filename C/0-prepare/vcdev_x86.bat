@@ -1,11 +1,11 @@
 @echo off
 title vcdev_x86
-@rem prompt [$P]$_$G
-if "%1" == "utf-8" ( chcp 65001
-)else if "%1" == "big5" ( chcp 950
-)else if "%1" == "gb2312" ( chcp 936
-)else if "%1" == "gbk" ( chcp 936
-)else chcp 65001
+if "%~1" == "utf-8" ( chcp 65001
+)else if "%~1" == "big5" ( chcp 950
+)else if "%~1" == "gb2312" ( chcp 936
+)else if "%~1" == "gbk" ( chcp 936
+)else (chcp 65001
+)
 
 @rem 当前编译平台采用架构
 set HOST_ARCH=x86
@@ -28,11 +28,12 @@ set "_UcrtLib=%UniversalCRTSdkDir%lib\%UCRTVersion%\"
 @rem 在Path上加上vc工具可执行文件cl.exe等的路径
 set "Path=%VCToolsInstallDir%bin\Host%HOST_ARCH%\%TGT_ARCH%;%Path%"
 @rem 配置INCLUDE环境变量，方便#include预处理指令
-set "INCLUDE=%VCToolsInstallDir%include;%_UcrtInclude%ucrt;%_UcrtInclude%shared;%_UcrtInclude%um;%_UcrtInclude%winrt"
+set "INCLUDE=%VCToolsInstallDir%include;%_UcrtInclude%ucrt;%_UcrtInclude%shared;%_UcrtInclude%winrt%_UcrtInclude%um;"
 @rem 配置LIB环境变量，方便链接
 set "LIB=%VCToolsInstallDir%lib\%HOST_ARCH%;%_UcrtLib%ucrt\%HOST_ARCH%;%_UcrtLib%um\%HOST_ARCH%"
 
 
 if "%_NotNeedNewCmd_%" == "" (
+    prompt [$P]$_$G
     cmd /k
 )

@@ -3,12 +3,10 @@
 echo ...
 cd /d %~pd0
 set _NotNeedNewCmd_=1
-set srcCharset="utf-8"
-call "..\0-prepare\vcdev_x86.bat" %srcCharset% >nul
+set srcCharset=utf-8
+call "..\0-prepare\vcdev_x86.bat" %srcCharset%>nul
+set srcPreNameSave=target\.srcPreName
 SETLOCAL ENABLEDELAYEDEXPANSION
-
-
-
 set index=0
 echo ------- 准备编译, 搜索【src】目录下的C源文件： -------
 for /f "tokens=*" %%i in ('dir /o-d /b src\*.c') do (
@@ -57,12 +55,25 @@ set "srcPreName=%srcFile:~0,-2%"
 if not exist target (
     mkdir target
 )
+echo %srcPreName%>%srcPreNameSave%
+title 编译==^>"src\%srcFile%"
 echo ------- 准备完毕,即将编译:"%srcFile%" -------
 echo.
+ENDLOCAL
 
+for /f "tokens=*" %%i in (%srcPreNameSave%) do (
+    set srcPreName=%%i
+    set srcFile=%%i.c
+)
 echo -------------- 开始编译:[%srcFile%] --------------
 @rem ping -n 2 127.0.1>nul
-set _CL_OPT=/Wall  /source-charset:%srcCharset% /execution-charset:%srcCharset%  "src\%srcFile%" /Fo"target\%srcPreName%" /Fe"target\%srcPreName%" /std:c11 /nologo /link /SUBSYSTEM:CONSOLE
+@rem 默认情况下，Visual Studio 检测字节顺序标记以确定源文件是否采用编码的 Unicode 格式
+@rem 如果未找到字节顺序标记，则假定源文件使用当前用户代码页进行编码，除非您已使用 /utf-8 或 /source-charset 选项指定了代码页。
+@rem /source-charset:%srcCharset% /execution-charset:%srcCharset%
+@rem  warning C4819: The file contains a character that cannot be represented in the current code page (0)
+@rem C4819字符警告在设了/execution-charset:utf-8,且汉字数量为奇数，没法去掉，只好通过/wd4819禁用该告警
+set _CL_OPT=/Wall /wd4819 /source-charset:%srcCharset% /execution-charset:%srcCharset% "src\%srcFile%" /Fo"target\%srcPreName%" /Fe"target\%srcPreName%" /std:c11 /nologo /link /SUBSYSTEM:CONSOLE
+
 echo 编译参数:%_CL_OPT%
 cl.exe %_CL_OPT%
 echo --------------------- 编译结束 ---------------------
