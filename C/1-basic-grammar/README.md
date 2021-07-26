@@ -80,7 +80,7 @@ int main(void) /* 函数头: 返回类型 函数名(参数[这里是void]) */
 
 自己写了个脚本([compileAndRun.bat](compileAndRun.bat))来编译执行这个程序：
 
-![2-1-compileAndRun.png](img\2-1-compileAndRun.png)
+![2-1-compileAndRun.png](img/2-1-compileAndRun.png)
 
 ### 3.注意
 
