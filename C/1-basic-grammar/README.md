@@ -282,4 +282,73 @@ C语言数据类型关键字：
 
 ## 四、字符串
 
-todo
+### 1.  介绍字符串
+
+> 字符数组，末尾加'\0' (null 字符)
+>
+> 注意：只能输入ANSI字符，why?因为需要支持'\0'字符结尾
+>
+> 示例:[4_1_string_intro.c](src/4_1_string_intro.c)
+>
+> C99 和 C11 标准专门为 sizeof 运算符的返回类型添加了％zd 转换说明
+>
+> scanf安全性不够，C4996提示用scanf_s
+
+
+
+### 2. 预处理器 
+
+   > #define NAME value
+   >
+   > 常量限定符 const(定义只读变量)
+   >
+   > limits.sh和float.h数据范围常量
+   >
+   > CHAR_MIN SHRT_MIN INT_MIN UINT_MIN ULONG_MIN FLT_MIN DBL_MIN
+   >
+   > CHAR_MAX SHRT_MAX INT_MAX UINT_MAX ULONG_MAX FLT_MAX DBL_MAX
+
+
+
+### 3. printf & scanf
+
+> 1. printf-转换说明符(conversion specification)
+>
+> 浮点数  -- 16进制和p计数法：%a、%A     10进制:%f   e计数法：%e,%E  自动匹配%g %G
+> 单字符  --  %c
+> 字符串  --  %s
+> 有符号10进制整数  --   %d、%i
+> 无符号10进制整数  --   %u
+> 无符号8进制整数  --   %o
+> 无符号16进制整数  --   %X、%x
+> 指针  -- %p
+>
+> 2. printf-转换修饰符
+>
+>    ![4-3-Conversion-Spec-Modifier.png](img/4-3-Conversion-Spec-Modifier.png)
+>
+> 3. scanf
+>
+>    scanf()函数允许把普通字符放在格式字符串中
+>
+>    如：`scanf("％d,％d", &n, &m);` 必须输入逗号"," 但可以跳过空格
+>
+>    scanf()函数返回成功读取的项数。
+>    没有读到或没有正确正确读取时scanf()返回0。
+>    当scanf()检测到“文件结尾”时，会返回EOF
+>
+>    scanf("％c",num)会读取每个字符，包括空格
+>
+> 4. 如果你不想预先指定字段宽度，希望通过程序来指定，那么可以用`*`修饰符代替字段宽度。
+>
+>    但还是要用一个参数告诉函数，字段宽度应该是多少。
+>
+>    如`printf("The number is: ％*d.\n", width, number);`
+>
+>    scanf()中`*`的用法与此不同。把*放在％和转换字符之间时，会使得scanf()跳过相应的输出项
+
+
+
+## 五、运算符
+
+//TODO

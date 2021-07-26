@@ -4,6 +4,7 @@ echo ...
 cd /d %~pd0
 set _NotNeedNewCmd_=1
 set srcCharset=utf-8
+@rem set srcCharset=gbk
 call "..\0-prepare\vcdev_x86.bat" %srcCharset%>nul
 set srcPreNameSave=target\.srcPreName
 SETLOCAL ENABLEDELAYEDEXPANSION
@@ -72,7 +73,7 @@ echo -------------- 开始编译:[%srcFile%] --------------
 @rem /source-charset:%srcCharset% /execution-charset:%srcCharset%
 @rem  warning C4819: The file contains a character that cannot be represented in the current code page (0)
 @rem C4819字符警告在设了/execution-charset:utf-8,且汉字数量为奇数，没法去掉，只好通过/wd4819禁用该告警
-set _CL_OPT=/Wall /wd4819 /source-charset:%srcCharset% /execution-charset:%srcCharset% "src\%srcFile%" /Fo"target\%srcPreName%" /Fe"target\%srcPreName%" /std:c11 /nologo /link /SUBSYSTEM:CONSOLE
+set _CL_OPT=/Wall /wd4819 /source-charset:utf-8 /execution-charset:%srcCharset% "src\%srcFile%" /Fo"target\%srcPreName%" /Fe"target\%srcPreName%" /std:c11 /nologo /link /SUBSYSTEM:CONSOLE
 
 echo 编译参数:%_CL_OPT%
 cl.exe %_CL_OPT%
