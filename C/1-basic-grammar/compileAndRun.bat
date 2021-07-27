@@ -23,12 +23,11 @@ if "%index%" == "0" (
 )
 echo.
 
+:chooseSrc
 set runLast=%~1
 if "-runLast" == "%runLast%" (
     set index=1
 )
-
-:chooseSrc
 if not "%index%" == "1" (
 echo ==^>请选择源文件编号^(默认选1^):
 set /p chooseIdx=
@@ -73,7 +72,8 @@ echo -------------- 开始编译:[%srcFile%] --------------
 @rem /source-charset:%srcCharset% /execution-charset:%srcCharset%
 @rem  warning C4819: The file contains a character that cannot be represented in the current code page (0)
 @rem C4819字符警告在设了/execution-charset:utf-8,且汉字数量为奇数，没法去掉，只好通过/wd4819禁用该告警
-set _CL_OPT=/Wall /wd4819 /source-charset:utf-8 /execution-charset:%srcCharset% "src\%srcFile%" /Fo"target\%srcPreName%" /Fe"target\%srcPreName%" /std:c11 /nologo /link /SUBSYSTEM:CONSOLE
+@rem 忽略C5045告警,已配置/Qspectre
+set _CL_OPT=/Wall  /wd4819  /wd5045 /Qspectre /source-charset:utf-8 /execution-charset:%srcCharset% "src\%srcFile%" /Fo"target\%srcPreName%" /Fe"target\%srcPreName%" /std:c11 /nologo /link /SUBSYSTEM:CONSOLE
 
 echo 编译参数:%_CL_OPT%
 cl.exe %_CL_OPT%
