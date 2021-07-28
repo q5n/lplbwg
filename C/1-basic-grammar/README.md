@@ -466,4 +466,212 @@ C语言数据类型关键字：
 
 ## 六、循环语句
 
-//TODO
+### 1. while循环
+
+> while( expression) 
+>
+> { statement }
+>
+> 入口条件循环entry condition
+
+### 2. 条件运算符
+
+   > < > == != >= <=
+   >
+   > 
+   >
+   > 一般而言，所有的非零值都视为真，只有0被视为假
+   >
+   > 
+   >
+   > C一直用int类型的变量表示真/假值。C99专门针对这种类型的变量新增了_Bool类型
+   >
+   > C99提供了stdbool.h头文件，该头文件让bool成为_Bool的别名，而且还把true和false分别定义为1和0的符号常量
+   >
+
+### 3. for循环
+
+> while循环是不确定循环（indefinite loop）。所谓不确定循环，指在测试表达式为假之前，预先不知道要执行多少次循环。
+>
+> 还有一类是计数循环（counting loop）。这类循环在执行循环之前就知道要重复执行多少次。
+>
+> for循环语法：
+>
+> for　(　initialize;　test;　update　)
+> 　　statement
+
+### 4. 其他运算符
+
+> 其他赋值运算符：+=、-=、*=、/=、％=
+>
+> **逗号运算符**扩展了for循环的灵活性，以便在循环头中包含更多的表达式
+
+### 5. do while循环
+
+> while循环和for循环都是入口条件循环，即在循环的每次迭代之前检查测试条件，所以有可能根本不执行循环体中的内容。
+>
+> C语言还有出口条件循环（exit-condition loop），即在循环的每次迭代之后检查测试条件，这保证了至少执行循环体中的内容一次。
+>
+> 如 do while循环，语法：
+>
+> do{
+> 　　statement;
+> }while　(　expression　);
+
+### 6.循环与数组
+
+> 数组（array）是按顺序储存的一系列类型相同的值,。整个数组有一个数组名，通过整数下标访问数组中单独的项或元素（element）
+>
+> char类型的数组末尾包含一个表示字符串末尾的空字符\0，则该数组中的内容就构成了一个字符串
+>
+> ~~~c
+> int nums[22]; // 可储存10个int类型的数组
+> char str[]={'h','e','l','l','o','\0'}; //char数组，因为末尾有0,所以也是一个字符串
+> ~~~
+>
+> 循环遍历数组：[6_1_for_loop_array.c](src/6_1_for_loop_array.c)
+
+
+
+## 七、分支&跳转
+
+### 1.判断if else
+
+> if语句被称为分支语句（branching statement）或选择语句（selection statement），因为它相当于一个交叉点，程序要在两条分支中选择一条执行。if语句的通用形式如下：
+> `if ( expression ) { statement }`
+>
+> 
+>
+> if else语句的通用形式是：
+>
+> ```c
+> if ( expression ) { statement }
+> else { statement3} 
+> ```
+>
+> 
+>
+> 
+>
+> 多重if else 
+>
+> ```c
+> if ( expression1 ) { statement1} 
+> else if ( expression2 ) { statement2} 
+> else if ( expression3 ) { statement3} 
+> else if ( expression4 ) { statement4} 
+> ...
+> else { statementN} 
+> ```
+>
+> 
+>
+> 
+>
+> <stdio.h>中：
+>
+> getchar() 从输入队列中返回下一个字符
+>
+> putchar(char) 输出一个字符到显示器
+>
+> < ctype.h>中有字符判断函数:如isalpha(char), isblank(char), isdigit(char) isspace(char)  islower(char) issupper(char)等等
+>
+> 示例:[7_1_change_input.c](src/7_1_change_input.c)
+
+### 2. 逻辑运算符
+
+> 与&&  或|| 非 !
+>
+> 引入<iso646.h>(C95)可以用备选拼写
+>
+> && 对应 and ， || 对应 or  ， ! 对应 not
+
+### 3. 条件运算符
+
+> 又称三元运算符或三目运算符
+>
+> `expression1 ? expression2：expression3`
+>
+> 如果 expression1 为真（非 0），那么整个条件表达式的值与 expression2 的值相同；如果expression1为假（0），那么整个条件表达式的值与expression3的值相同
+>
+> 如求最大值：
+>
+> `max = (a > b) ? a：b;`
+
+### 4. continue & break
+
+> 3种循环都可以使用continue语句。执行到该语句时，会跳过本次迭代的剩余部分，并开始下一轮迭代。如果continue语句在嵌套循环内，则只会影响包含该语句的内层循环
+>
+> 程序执行到循环中的break语句时，会终止包含它的循环，并继续执行下一阶段。如果break语句位于嵌套循环内，它只会影响包含它的当前循环。
+>
+> ![7-4-continue&break.png](img/7-4-continue&break.png)
+
+### 5. switch+break
+
+> 
+> 语法:
+> ```c
+> switch ( 整型表达式)
+> {
+> 　　case 常量1：
+> 　　　　语句　　　//可选
+> 　　　　break;  //可选
+> 　　case 常量2：
+> 　　　　语句　　　//可选
+> 　　　　break;  //可选
+> 　　default：　　 //可选
+> 　　　　语句　　　//可选
+> 　　　　break;  //可选
+> }
+> ```
+>
+
+### 6. goto语句
+> goto语句有两部分：goto和标签名。标签的命名遵循变量命名规则，如下所示：
+> `goto part2;`
+> 要让这条语句正常工作，函数还必须包含另一条标为part2的语句，该语句以标签名后紧跟一个冒号开始：
+> `part2：printf("xxx");`
+>
+> **避免使用goto**
+
+### 7. 字符操作、io流
+
+> 缓冲区
+>
+> 大部分系统在用户按下Enter键之前不会重复打印刚输入的字符，这种输入形式属于缓冲输入。用户输入的字符被收集并储存在一个被称为缓冲区（buffer）的临时存储区，按下Enter键后，程序才可使用用户输入的字符
+>
+>  某些交互式程序也需要无缓冲输入。例如，在游戏中，你希望按下一个键就执行相应的指令
+>
+> 
+>
+> 可以用处理文件的方式来处理键盘输入。例如，程序读文件时要能检测文件的末尾才知道应在何处停止。因此，C 的输入函数内置了文件结尾检测器。既然可以把键盘输入视为文件，那么也应该能使用文件结尾检测器结束键盘输入
+>
+> 检测文件结尾的一种方法是，在文件末尾放一个特殊的字符标记文件结尾。CP/M、IBM-DOS和MS-DOS的文本文件曾经用过这种方法。
+>
+> 在C语言中，用getchar()读取文件检测到文件结尾时将返回一个特殊的值，即EOF（end of file的缩写，定义在stdio.h文件）。scanf()函数检测到文件结尾时也返回EOF
+>
+> 
+>
+> 字符操作：[7_1_char_get_put.c](src/7_1_char_get_put.c)
+>
+> 编译产生可执行文件：7_1_char_get_put.exe
+>
+> 1. 重定向输入，将my.txt文件的内容输出屏幕上:
+>
+>    `7_1_char_get_put.exe<my.txt`
+>
+> 2. 重定向输出，接收键盘输入，输出到my.txt文件
+>
+>    `7_1_char_get_put.exe>my.txt`
+>
+> 3. 组合重定向，复制my.txt到target.txt
+>
+>    `7_1_char_get_put.exe<my.txt>target.txt`
+>
+> 
+
+
+
+## 八、函数
+
+//todo
