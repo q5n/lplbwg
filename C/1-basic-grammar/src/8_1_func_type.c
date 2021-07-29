@@ -1,6 +1,11 @@
 #include <stdio.h>
-#include "8_1_test.h"
-#include "8_1_test2.h"
+
+add(int a,int b){
+    return a+b;
+}
+printStar(void){
+    printf("**********");
+}
 
 int main(void){
     int a=123,b=456;
@@ -8,11 +13,4 @@ int main(void){
     printStar();
     printf("a+ b=%d\n",add(a,b));
     return 0;
-}
-
-int add(int a,int b){
-    return a+b;
-}
-void printStar(){
-    printf("***********************\n");
 }
