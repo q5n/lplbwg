@@ -6,10 +6,13 @@ set _NotNeedNewCmd_=1
 set srcCharset=utf-8
 @rem set srcCharset=gbk
 call "..\0-prepare\vcdev_x86.bat" %srcCharset%>nul
+title 编译单个C文件
 set srcPreNameSave=target\.srcPreName
 SETLOCAL ENABLEDELAYEDEXPANSION
+echo ------- 准备进行单文件编译 -------
+echo.
 set index=0
-echo ------- 准备编译, 搜索【src】目录下的C源文件： -------
+echo -------  搜索【src】目录下的C源文件： -------
 for /f "tokens=*" %%i in ('dir /o-d /b src\*.c') do (
     set /A index += 1
     if /i !index! GTR 10 (
@@ -24,12 +27,11 @@ if "%index%" == "0" (
 echo.
 
 :chooseSrc
-set runLast=%~1
-if "-runLast" == "%runLast%" (
+if "last" == "%~1" (
     set index=1
 )
 if not "%index%" == "1" (
-echo ==^>请选择源文件编号^(默认选1^):
+echo ==^>请输入选择的源文件编号^(不输入默认选1^):
 set /p chooseIdx=
 )
 if "%chooseIdx%" == "" (
@@ -74,8 +76,13 @@ echo -------------- 开始编译:[%srcFile%] --------------
 ::@rem  warning C4819: The file contains a character that cannot be represented in the current code page ^(0^)  
 ::@rem C4819字符警告在设了/execution-charset:utf-8,且汉字数量为奇数，没法去掉，只好通过/wd4819禁用该告警   
 ::禁用5045告警，已配置/Qspectre防止cpu预测执行 
-set _CL_OPT=/Wall  /wd4819  /wd5045 /Qspectre /source-charset:utf-8 /execution-charset:%srcCharset% "src\%srcFile%" /Fo"target\%srcPreName%" /Fe"target\%srcPreName%" /std:c11 /nologo /link /SUBSYSTEM:CONSOLE
-echo 编译参数:%_CL_OPT%
+set _CL_OPT=/Wall  /wd4819  /wd5045 /Qspectre /source-charset:utf-8 /execution-charset:%srcCharset% "src\%srcFile%" /I include /Fo"target\%srcPreName%" /Fe"target\%srcPreName%" /std:c11 /nologo /link /SUBSYSTEM:CONSOLE
+echo 【环境变量INCLUDE】==^> %INCLUDE%
+echo.
+echo 【环境变量LIB】==^> %LIB%
+echo.
+echo 【编译参数】==^> %_CL_OPT%
+echo.
 
 cl.exe %_CL_OPT%
 echo --------------------- 编译结束 ---------------------
