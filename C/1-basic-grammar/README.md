@@ -39,6 +39,8 @@ c语言标准委员会地址:[[Project status and milestones (open-std.org)](htt
 
 [visual studio C标准库文档](https://docs.microsoft.com/cpp/c-runtime-library/reference/crt-alphabetical-function-reference)
 
+[C语言帮助文档](https://docs.microsoft.com/cpp/c-language/)
+
 ### 2.编译过程
 
 **Linux**:
@@ -465,11 +467,18 @@ C语言数据类型关键字：
 >
 > 是C99标准规定 :实参术语actual  argument;  形参术语formal parameter
 >
->  示例[5_2_func_param.c](src/5_2_func_param.c)
+> 示例[5_2_func_param.c](src/5_2_func_param.c)
 >
 > **函数声明**只指明了函数名和返回类型，没有指明参数类型
 >
 > **函数原型**在函数声明的基础上包含形参。
+
+### 6.运算符优先级
+
+> ![5-6-operator-precedence.png](img/5-6-operator-precedence.png)
+> 
+>
+> 
 
 ## 六、循环语句
 
@@ -1001,15 +1010,15 @@ C语言数据类型关键字：
 >    ```c
 >    int i1=0;//i是变量，可以修改，可以赋值给常量
 >    const int i2=i1; //i是整数常量(不能修改值),可以赋值给变量，不能赋值给非初始化的常量
->                      
+>                            
 >    //存储整数变量的数组，数组中元素可以修改,但数组地址arr初始化后不能被修改，可给同类型数组初始化，可给同类型指针变量赋值或初始化，不能赋值给指针常量与数组
 >    int arr1[]={1,2,3}; 
 >    //存储整数常量的数组，数组中元素不能修改，arr初始化后不能被修改，可给同类型数组初始化，初始化或赋值给指针变量时告警，不能赋值给指针常量与数组
 >    const int arr2[]={1,2,3}; 
->                      
+>                            
 >    int * const cptr1={1,2,3}; //指向整数常量的指针常量 同整型变量数组
 >    const int * const cptr2={1,2,3}; //指向整数常量的指针常量 同整型常量数组
->                      
+>                            
 >    int *vptr1=arr1;//指向整数变量的指针变量，指针地址值可变
 >    int *const vptr2=arr1;//指向整数变量的指针变量，指针地址值可变
 >    ```
@@ -1186,3 +1195,28 @@ C语言数据类型关键字：
 >
 >       示例[10_5_gets_s.c](src/10_5_gets_s.c);
 
+### 3.字符串函数
+
+> 1. `strlen()`用于统计字符串的长度
+>
+>    示例:[10_6_fit_by_strlen.c](src/10_6_fit_by_strlen.c)
+>
+> 2. `strcat()`用于拼接字符串, 接收2个参数，把第2个字符串附加到第1个末尾，返回第1个字符串地址
+>
+>       
+>
+> 3. `strcmp()` 
+>
+> 4. `strncmp()` 
+>
+> 5. `strcpy()` 
+>
+> 6. `strncpy()` 
+>
+> 7. `sprintf()` 
+>
+> 
+>
+> 
+>
+> 

@@ -78,7 +78,7 @@ set DEFINE_OPT=/D"C_R_MODE=1"
 ::@rem  warning C4819: The file contains a character that cannot be represented in the current code page ^(0^)  
 ::@rem C4819字符警告在设了/execution-charset:utf-8,且汉字数量为奇数，没法去掉，只好通过/wd4819禁用该告警   
 ::禁用5045告警，已配置/Qspectre防止cpu预测执行 
-set _CL_OPT=%DEFINE_OPT% /Wall /wd4819  /wd5045 /Qspectre /source-charset:utf-8 /execution-charset:%srcCharset% "src\%srcFile%" /I include /Fo"target\%srcPreName%" /Fe"target\%srcPreName%" /std:c11 /nologo /link /SUBSYSTEM:CONSOLE
+set _CL_OPT=/Gy %DEFINE_OPT% /Wall /wd4819  /wd5045 /Qspectre /source-charset:utf-8 /execution-charset:%srcCharset% "src\%srcFile%" /I include /Fo"target\%srcPreName%" /Fe"target\%srcPreName%" /std:c11 /nologo /link /SUBSYSTEM:CONSOLE
 echo 【环境变量INCLUDE】==^> %INCLUDE%
 echo.
 echo 【环境变量LIB】==^> %LIB%
