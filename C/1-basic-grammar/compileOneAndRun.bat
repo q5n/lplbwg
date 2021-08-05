@@ -65,7 +65,7 @@ ENDLOCAL
 
 SETLOCAL ENABLEDELAYEDEXPANSION
 for /f "tokens=*" %%i in (%srcPreNameSave%) do (
-    set "targetName=target\%%i"
+    set "tgexe=target\%%i"
     set "srcFile=src\%%i.c"
 )
 
@@ -89,7 +89,7 @@ set DEFINE_OPT=/D"C_R_MODE=1"
 ::@rem  warning C4819: The file contains a character that cannot be represented in the current code page ^(0^)  
 ::@rem C4819字符警告在设了/execution-charset:utf-8,且汉字数量为奇数，没法去掉，只好通过/wd4819禁用该告警   
 ::禁用5045告警，已配置/Qspectre防止cpu预测执行 
-set _CL_OPT=/Gy %DEFINE_OPT% /Wall /wd4819  /wd5045 /Qspectre /source-charset:utf-8 /execution-charset:%srcCharset%  "%srcFile%" /I include /Fo"%targetName%" /Fe"%targetName%" /std:c11 /nologo /link %LIB_DEPENDS% /SUBSYSTEM:CONSOLE
+set _CL_OPT=/Gy %DEFINE_OPT% /Wall /wd4819  /wd5045 /Qspectre /source-charset:utf-8 /execution-charset:%srcCharset%  "%srcFile%" /I include /Fo"%tgexe%" /Fe"%tgexe%" /std:c11 /nologo /link %LIB_DEPENDS% /SUBSYSTEM:CONSOLE
 @rem /DEFAULTLIB:lib\10_5_s_gets_lib.lib
 echo 【环境变量INCLUDE】==^> %INCLUDE%
 echo.
@@ -106,13 +106,17 @@ cl.exe %_CL_OPT%
 echo --------------------- 编译结束 ---------------------
 echo.
 
-if "%ERRORLEVEL%" == "0" (
-echo ==--------------------- 开始执行:"%targetName%.exe" ---------------------==
-@rem ping -n 2 127.0.1>nul
-"%targetName%.exe"
-echo ==--------------------- 执行完毕，按任意键退出！ ---------------------==
-) else (
+if not "%ERRORLEVEL%" == "0" (
 echo ======== 编译失败！！！ ========
+goto :end
 )
+echo ==--------------------- 开始执行:"%tgexe%.exe" ---------------------==
+@rem ping -n 2 127.0.1>nul
+"%tgexe%.exe"
+echo ==------------------ 执行完毕，输入cmd进入命令行，直接回车可退出！ ------------------==
+
 :end
-pause>nul
+set /p doWhat=
+if "%doWhat%" == "cmd" (
+    cmd /k
+)

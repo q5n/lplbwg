@@ -185,10 +185,12 @@ set "libFileName=lib\%libFileName%.lib"
 lib.exe @"%libObjects%" /out:"%libFileName%"
 if "%ERRORLEVEL%" == "0" (
     echo 打包生成库文件:%libFileName%
-    echo ==--------------------- 打包完毕，按任意键退出！ ---------------------==
+    echo echo ==------------------ 打包完毕，输入cmd进入命令行，直接回车可退出！ ------------------==
 ) else (
     echo ======== 打包失败！！！ ========
 )
-
 :end
-pause>nul
+set /p doWhat=
+if "%doWhat%" == "cmd" (
+    cmd /k
+)

@@ -146,7 +146,7 @@ ENDLOCAL
 
 
 for /f "tokens=*" %%i in (%srcCFile%) do (
-    set "exeFileName=%tgtDir%\%%~ni.exe"
+    set "tgexe=%tgtDir%\%%~ni.exe"
     goto:endloop2;
 )
 :endloop2
@@ -161,7 +161,7 @@ set DEFINE_OPT=/D"C_R_MODE=2"
 ::@rem C4819字符警告在设了/execution-charset:utf-8,且汉字数量为奇数，没法去掉，只好通过/wd4819禁用该告警   
 ::禁用5045告警，已配置/Qspectre防止cpu预测执行 
 
-set _CL_OPT=%DEFINE_OPT% /Wall /wd4819  /wd5045 /Qspectre /source-charset:utf-8 /execution-charset:%srcCharset% /Fo"%tgtDir%\\" /Fe"%exeFileName%" /I include @"%srcCFile%" /std:c11 /nologo /link /SUBSYSTEM:CONSOLE
+set _CL_OPT=%DEFINE_OPT% /Wall /wd4819  /wd5045 /Qspectre /source-charset:utf-8 /execution-charset:%srcCharset% /Fo"%tgtDir%\\" /Fe"%tgexe%" /I include @"%srcCFile%" /std:c11 /nologo /link /SUBSYSTEM:CONSOLE
 echo 【环境变量INCLUDE】==^> %INCLUDE%
 echo.
 echo 【环境变量LIB】==^> %LIB%
@@ -175,11 +175,14 @@ echo --------------------- 编译结束 ---------------------
 echo.
 
 if "%compileResult%" == "0" (
-echo ==--------------------- 开始执行:"%exeFileName%" ---------------------==
-call "%exeFileName%"
-echo ==--------------------- 执行完毕，按任意键退出！ ---------------------==
+echo ==--------------------- 开始执行:"%tgexe%" ---------------------==
+call "%tgexe%"
+echo ==------------------ 执行完毕，输入cmd进入命令行，直接回车可退出！ ------------------==
 ) else (
 echo ======== 编译失败！！！ ========
 )
 :end
-pause>nul
+set /p doWhat=
+if "%doWhat%" == "cmd" (
+    cmd /k
+)
