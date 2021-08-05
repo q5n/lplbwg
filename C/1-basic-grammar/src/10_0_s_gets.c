@@ -1,4 +1,4 @@
-#include "myio.h"
+#include "my_io.h"
 
 char* s_gets(char*str,int n){
     char *ret;

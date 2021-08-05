@@ -1203,20 +1203,68 @@ C语言数据类型关键字：
 >
 > 2. `strcat()`用于拼接字符串, 接收2个参数，把第2个字符串附加到第1个末尾，返回第1个字符串地址
 >
->    
+>    示例:[10_7_strcat.c](src/10_7_strcat.c)
 >
-> 3. `strcmp()` 
+> 3. `strncat()`前两个参和`strcat()`函数一样，该函数的第3个参数指定了最大添加字符数
 >
-> 4. `strncmp()` 
+>    示例：[10_8_strncat.c](src/10_8_strncat.c)
 >
-> 5. `strcpy()` 
+> 4. `strcmp()` 比较两个字符串参数，如果两个字符串相同， strcmp()返回0； 如果第1个字符串在第2个字符串后面，strcmp()返回正数。
 >
-> 6. `strncpy()` 
+>    示例：[10_9_strcmp.c](src/10_9_strcmp.c)
 >
-> 7. `sprintf()` 
+> 5. `strncmp()` 比较两字符串的最多前n个字符
 >
-> 
+>    示例:[10_10_strncmp.c](src/10_10_strncmp.c)
 >
-> 
+> 6. `strcpy()` 和`strncpy()` 参考赋值表达式语句， 很容易记住strcpy()参数的顺序， 即第1个是目标字符串， 第2个是源字符串  
 >
+>    2个属性： 
+>
+>    ① strcpy()的返回类型是 char *，该函数返回的是第 1个参数的值， 即一个字符的地址。
+>
+>     ②第 1 个参数不必指向数组的开始。   
+>
+>    strncpy(target, source, n)把source中的n个字符或空字符之前的字符（先满足哪个条件就拷贝到何处） 拷贝至target中。
+>
+>     因此， 如果source中的字符数小于n， 则拷贝整个字符串， 包括空字符。
+>
+>     但是， strncpy()拷贝字符串的长度不会超过n， 如果拷贝到第n个字符时还未拷贝完整个源字符串， 就不会拷贝空字符。   
+>
+>    示例：[10_11_strcpy_strncpy.c](src/10_11_strcpy_strncpy.c)
+>
+> 7. `sprintf()`  sprintf()的第1个参数是目标字符串的地址。 其余参数和printf()相同， 即格式字符串和待写入项的列表  
+>
+>    sprintf 位于stdio.h
+>
+>    示例:[10_12_sprintf.c](src/10_12_sprintf.c)
+>
+> 8. 其他函数 
+>
+>    1. `char *strchr(const char * s, int c);  `
+>
+>       如果s字符串中包含c字符， 该函数返回指向s字符串首位置的指针（末尾的空字符也是字符串的一部分， 所以在查找范围内） ；如果在字符串s中未找到c字符， 该函数则返回空指针
+>
+>    2. `char *strrchr(const char * s, int c);  `
+>
+>       该函数返回s字符串中c字符的最后一次出现的位置（末尾的空字符也是字符串的一部分， 所以在查找范围内）。 如果未找到c字符，则返回空指针
+>
+>    3. `char *strpbrk(const char * s1, const char * s2);  `
+>
+>       如果 s1 字符中包含 s2 字符串中的任意字符， 该函数返回指向 s1 字符串首位置的指针；如果在s1字符串中未找到任何s2字符串中的字符， 则返回空字符。
+>
+>    4. `char *strstr(const char * s1, const char * s2);  `
+>
+>       该函数返回指向s1字符串中s2字符串出现的首位置。 如果在s1中没有找到s2， 则返回空指针。
+>
+>    5. `size_t strlen(const char * s);  `
+>
+>       该函数返回s字符串中的字符数， 不包括末尾的空字符。  
+>
+> 9. 字符串排序
+>
+>    示例:[10_13_str_sort.c](src/10_13_str_sort.c)
+
+4.ctype.h字符函数
+
 > 

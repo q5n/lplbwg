@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "myio.h"
+#include "my_io.h"
 
 #define STRING2(x) #x
 #define STRING(x) STRING2(x)
@@ -21,7 +21,7 @@ void input_str(char *str){
         gets_s(str,STR_LENGTH);
         printf("first char: %d\n",str[0]);
 #else
-#pragma  message("use s_gets() from \"myio.h\"")
+#pragma  message("use s_gets() from \"my_io.h\"")
         s_gets(str,STR_LENGTH);
 #endif
         printf("show string by puts ==> ");
