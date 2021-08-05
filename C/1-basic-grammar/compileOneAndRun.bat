@@ -63,10 +63,21 @@ echo ------- 准备完毕,即将编译:"%srcFile%" -------
 echo.
 ENDLOCAL
 
+SETLOCAL ENABLEDELAYEDEXPANSION
 for /f "tokens=*" %%i in (%srcPreNameSave%) do (
-    set srcPreName=%%i
-    set srcFile=%%i.c
+    set "targetName=target\%%i"
+    set "srcFile=src\%%i.c"
 )
+
+set "LIB_DEPENDS="
+for /f "tokens=1,2*"  %%i in (%srcFile%) do (
+    if "%%i" == "#include" (
+        if exist lib\%%~nj.lib (
+            set "LIB_DEPENDS=!LIB_DEPENDS!lib\%%~nj.lib "
+        )
+    )
+)
+
 echo -------------- 开始编译:[%srcFile%] --------------
 ::自定义宏C_R_MODE
 set DEFINE_OPT=/D"C_R_MODE=1"
@@ -78,22 +89,27 @@ set DEFINE_OPT=/D"C_R_MODE=1"
 ::@rem  warning C4819: The file contains a character that cannot be represented in the current code page ^(0^)  
 ::@rem C4819字符警告在设了/execution-charset:utf-8,且汉字数量为奇数，没法去掉，只好通过/wd4819禁用该告警   
 ::禁用5045告警，已配置/Qspectre防止cpu预测执行 
-set _CL_OPT=/Gy %DEFINE_OPT% /Wall /wd4819  /wd5045 /Qspectre /source-charset:utf-8 /execution-charset:%srcCharset% "src\%srcFile%" /I include /Fo"target\%srcPreName%" /Fe"target\%srcPreName%" /std:c11 /nologo /link /SUBSYSTEM:CONSOLE
+set _CL_OPT=/Gy %DEFINE_OPT% /Wall /wd4819  /wd5045 /Qspectre /source-charset:utf-8 /execution-charset:%srcCharset%  "%srcFile%" /I include /Fo"%targetName%" /Fe"%targetName%" /std:c11 /nologo /link %LIB_DEPENDS% /SUBSYSTEM:CONSOLE
+@rem /DEFAULTLIB:lib\10_5_s_gets_lib.lib
 echo 【环境变量INCLUDE】==^> %INCLUDE%
 echo.
 echo 【环境变量LIB】==^> %LIB%
 echo.
 echo 【编译参数】==^> %_CL_OPT%
 echo.
+if not "%LIB_DEPENDS%" == "" (
+    echo 【依赖库】==^>%LIB_DEPENDS%
+    echo.
+)
 
 cl.exe %_CL_OPT%
 echo --------------------- 编译结束 ---------------------
 echo.
 
 if "%ERRORLEVEL%" == "0" (
-echo ==--------------------- 开始执行:"target\%srcPreName%.exe" ---------------------==
+echo ==--------------------- 开始执行:"%targetName%.exe" ---------------------==
 @rem ping -n 2 127.0.1>nul
-"target\%srcPreName%"
+"%targetName%.exe"
 echo ==--------------------- 执行完毕，按任意键退出！ ---------------------==
 ) else (
 echo ======== 编译失败！！！ ========
