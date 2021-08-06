@@ -4,7 +4,7 @@
 
 2. 编译器[Visual Studio Community 2019](https://visualstudio.microsoft.com/vs/community/)
 
-   版本:16.8 以上( [以支持C11,C17标准](https://docs.microsoft.com/cpp/overview/install-c17-support) )
+   版本:16.8 以上( [部分支持C11,C17标准](https://docs.microsoft.com/cpp/overview/install-c17-support) )
 
 3. Windows SDK
 

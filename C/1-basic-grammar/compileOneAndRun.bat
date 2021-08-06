@@ -110,6 +110,7 @@ if not "%ERRORLEVEL%" == "0" (
 echo ======== 编译失败！！！ ========
 goto :end
 )
+title 编译完毕，执行:"%tgexe%"
 echo ==--------------------- 开始执行:"%tgexe%.exe" ---------------------==
 @rem ping -n 2 127.0.1>nul
 "%tgexe%.exe"

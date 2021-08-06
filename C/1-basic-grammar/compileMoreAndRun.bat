@@ -175,6 +175,7 @@ echo --------------------- 编译结束 ---------------------
 echo.
 
 if "%compileResult%" == "0" (
+title 编译完毕，执行:"%tgexe%"
 echo ==--------------------- 开始执行:"%tgexe%" ---------------------==
 call "%tgexe%"
 echo ==------------------ 执行完毕，输入cmd进入命令行，直接回车可退出！ ------------------==
@@ -184,6 +185,6 @@ echo ======== 编译失败！！！ ========
 :end
 set /p doWhat=
 if "%doWhat%" == "cmd" (
-    set /p=""%tgexe%.exe""<nul|clip
+    set /p=""%tgexe%""<nul|clip
     cmd /k
 )
