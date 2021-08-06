@@ -192,5 +192,6 @@ if "%ERRORLEVEL%" == "0" (
 :end
 set /p doWhat=
 if "%doWhat%" == "cmd" (
+    set /p=""%libFileName%""<nul|clip
     cmd /k
 )

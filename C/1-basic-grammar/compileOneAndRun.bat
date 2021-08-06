@@ -118,5 +118,6 @@ echo ==------------------ 执行完毕，输入cmd进入命令行，直接回车
 :end
 set /p doWhat=
 if "%doWhat%" == "cmd" (
+    set /p=""%tgexe%.exe""<nul|clip
     cmd /k
 )

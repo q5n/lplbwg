@@ -1,6 +1,6 @@
 @echo off
 chcp 65001>nul
-echo 开始清除target\*...
+echo start clear: target\*...
 del /s /q target\*
-echo 清除完毕！
+echo clear over!
 ping 127.0.0.1>nul

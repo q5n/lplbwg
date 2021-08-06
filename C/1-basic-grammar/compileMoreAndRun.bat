@@ -184,5 +184,6 @@ echo ======== 编译失败！！！ ========
 :end
 set /p doWhat=
 if "%doWhat%" == "cmd" (
+    set /p=""%tgexe%.exe""<nul|clip
     cmd /k
 )
