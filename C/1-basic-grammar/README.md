@@ -1012,15 +1012,15 @@ C语言数据类型关键字：
 >    ```c
 >    int i1=0;//i是变量，可以修改，可以赋值给常量
 >    const int i2=i1; //i是整数常量(不能修改值),可以赋值给变量，不能赋值给非初始化的常量
->                                                                                     
+>                                                                                        
 >    //存储整数变量的数组，数组中元素可以修改,但数组地址arr初始化后不能被修改，可给同类型数组初始化，可给同类型指针变量赋值或初始化，不能赋值给指针常量与数组
 >    int arr1[]={1,2,3}; 
 >    //存储整数常量的数组，数组中元素不能修改，arr初始化后不能被修改，可给同类型数组初始化，初始化或赋值给指针变量时告警，不能赋值给指针常量与数组
 >    const int arr2[]={1,2,3}; 
->                                                                                     
+>                                                                                        
 >    int * const cptr1={1,2,3}; //指向整数常量的指针常量 同整型变量数组
 >    const int * const cptr2={1,2,3}; //指向整数常量的指针常量 同整型常量数组
->                                                                                     
+>                                                                                        
 >    int *vptr1=arr1;//指向整数变量的指针变量，指针地址值可变
 >    int *const vptr2=arr1;//指向整数变量的指针变量，指针地址值可变
 >    ```
@@ -1939,9 +1939,108 @@ C语言数据类型关键字：
 
 ### 4.其他标准IO函数
 
+> **1.ungetc()**
+>
+> `int ungetc(int,FILE*)`
+>
+> 函数把c指定的字符放回输入流中。 
+>
+> 如果把一个字符放回输入流， 下次调用标准输入函数时将读取该字符  
+>
+> **2.fflush()**
+>
+> `int fflush(FILE*) `
+>
+> 引起输出缓冲区中所有的未写入数据被发送到fp指定的输出文件。   
+>
+> 这个过程称为刷新缓冲区。   
+>
+> 如果 fp是空指针，所有输出缓冲区都被刷新 .
+>
+> 只要最近一次操作不是输入操作， 就可以用该函数来更新流（任何读写模式）  
+>
+> **3.setvbuf()  **
+>
+> `int setvbuf(FILE * restrict fp, char * restrict buf, int mode, size_t size);`
+>
+> 创建了一个供标准I/O函数替换使用的缓冲区。 在打开文件后且未对流进行其他操作之前， 调用该函数  
+>
+> 指针fp识别待处理的流， buf指向待使用的存储区。
+>
+>  如果buf的值不是NULL， 则函数会为自己分配一个  缓冲区。
+>
+>  变量size告诉setvbuf()数组的大小 。 
+>
+> mode的选择如下： 
+>
+> ​	_IOFBF表示完全缓冲（在缓冲区满时刷新） ；
+>
+> ​	 _IOLBF表示行缓冲（在缓冲区满时或写入一个换行符时） ；
+>
+>  	_IONBF表示无缓冲。
+>
+> 如果操作成功，函数返回0， 否则返回一个非零值。  
+>
+> **4.fwrite()**
+>
+> `size_t fwrite(const void * restrict ptr, size_t size, size_t nmemb,FILE * restrict fp);`
+>
+> 把二进制数据写入文件。   
+>
+> 指针ptr是待写入数据块的地址。 size表示待写入数据块的大小（以字节为单位） ，
+>
+>  nmemb表示待写入数据块的数量。 和其他函数一样，fp指定待写入的文件。     
+>
+> ```c
+> char buffer[256];
+> fwrite(buffer, 256, 1, fp);//把一块256字节的数据从buffer写入文件
+> 
+> double earnings[10];
+> fwrite(earnings, sizeof(double), 10, fp);//把earnings数组中的数据写入文件， 数据被分成10块， 每块都是double的大小
+> ```
+>
+> fwrite()函数返回成功写入项的数量。 正常情况下， 该返回值就是nmemb， 但如果出现写入错误， 返回值会比nmemb小。  
+>
+> **5.fread()**
+>
+> `size_t fread(void * restrict ptr, size_t size, size_t nmemb,FILE * restrict fp);  `
+>
+> fread()函数接受的参数和fwrite()函数相同。 在fread()函数中， ptr是待读取文件数据在内存中的地址， fp指定待读取的文件。 
+>
+> 该函数用于读取被fwrite()写入文件的数据。   
+>
+> ```c
+> double earnings[10];
+> fread(earnings, sizeof (double), 10, fp)//把10个double大小的值拷贝进earnings数组中
+> ```
+>
+> fread()函数返回成功读取项的数量。 正常情况下， 该返回值就是nmemb， 但如果出现读取错误或读到文件结尾， 该返回值就会比nmemb小。  
+>
+> **6.feof()、ferror()**
+>
+> 如果标准输入函数返回 EOF， 则通常表明函数已到达文件结尾。 然而， 出现读取错误时， 函数也会返回EOF。 
+>
+> feof()和ferror()函数用于区分这两种情况。   
+>
+> 当上一次输入调用检测到文件结尾时， feof()函数返回一个非零值， 否则返回0。
+>
+>  当读或写出现错误， ferror()函数返回一个非零值， 否则返回0  
+>
+> 
+>
+> 示例A-把文件附加到另一个文件末尾： [12_4_attach_a_file.c](src/12_4_attach_a_file.c) 
+>
+> 
+>
+> 示例B-随机访问二进制文件: [12_5_rand_access_file.c](src/12_5_rand_access_file.c) 
+
+
+
+
+
+## 十三、结构体、其他数据类型
+
 //todo
-
-
 
 
 
