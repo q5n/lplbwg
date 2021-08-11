@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _MY_IO_H_
-#define _MY_IO_H_
+#ifndef MY_IO_H_
+#define MY_IO_H_
 
 #include <stdio.h>
 
@@ -8,4 +8,4 @@
 char* s_gets(char*str,int n);
 
 
-#endif  _MY_IO_H_
+#endif //MY_IO_H_

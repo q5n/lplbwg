@@ -6,6 +6,8 @@
 
    版本:16.8 以上( [部分支持C11,C17标准](https://docs.microsoft.com/cpp/overview/install-c17-support) )
 
+   不支持变长数组(variable-length array，VLA),以及[其他不支持](https://devblogs.microsoft.com/cppblog/c11-and-c17-standard-support-arriving-in-msvc/)
+
 3. Windows SDK
 
    [Windows SDK 10.0.20348.0 (版本 2104)](https://developer.microsoft.com/windows/downloads/windows-10-sdk/)或更高版本
