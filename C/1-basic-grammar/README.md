@@ -1000,15 +1000,15 @@ C语言数据类型关键字：
 >    ```c
 >    int i1=0;//i是变量，可以修改，可以赋值给常量
 >    const int i2=i1; //i是整数常量(不能修改值),可以赋值给变量，不能赋值给非初始化的常量
->                                                                                                                                  
+>                                                                                                                                              
 >    //存储整数变量的数组，数组中元素可以修改,但数组地址arr初始化后不能被修改，可给同类型数组初始化，可给同类型指针变量赋值或初始化，不能赋值给指针常量与数组
 >    int arr1[]={1,2,3}; 
 >    //存储整数常量的数组，数组中元素不能修改，arr初始化后不能被修改，可给同类型数组初始化，初始化或赋值给指针变量时告警，不能赋值给指针常量与数组
 >    const int arr2[]={1,2,3}; 
->                                                                                                                                  
+>                                                                                                                                              
 >    int * const cptr1={1,2,3}; //指向整数常量的指针常量 同整型变量数组
 >    const int * const cptr2={1,2,3}; //指向整数常量的指针常量 同整型常量数组
->                                                                                                                                  
+>                                                                                                                                              
 >    int *vptr1=arr1;//指向整数变量的指针变量，指针地址值可变
 >    int *const vptr2=arr1;//指向整数变量的指针变量，指针地址值可变
 >    ```
@@ -2874,7 +2874,7 @@ C语言数据类型关键字：
 >
 > 在#define中可以创建外形和作用与函数类似的类函数宏  
 >
-> 示例: [15_2_marco_args.c](src\15_2_marco_args.c) 
+> 示例: [15_2_marco_args.c](src/15_2_marco_args.c) 
 >
 > 注意加括号
 >
@@ -2884,7 +2884,7 @@ C语言数据类型关键字：
 >
 > 如果x是一个宏形参， 那么#x就是转换为字符串"x"的形参名。   
 >
-> 示例： [15_3_marco_stringizing.c](src\15_3_marco_stringizing.c) 
+> 示例： [15_3_marco_stringizing.c](src/15_3_marco_stringizing.c) 
 >
 > 
 >
@@ -2892,7 +2892,7 @@ C语言数据类型关键字：
 >
 > ##运算符把两个记号组合成一个记号  
 >
-> 示例: [15_4_marco_glue.c](src\15_4_marco_glue.c) 
+> 示例: [15_4_marco_glue.c](src/15_4_marco_glue.c) 
 >
 > 
 >
@@ -2904,7 +2904,7 @@ C语言数据类型关键字：
 >
 > 注意：省略号只能代替最后的宏参数  
 >
-> 示例： [15_5_marco_variadic_arg.c](src\15_5_marco_variadic_arg.c) 
+> 示例： [15_5_marco_variadic_arg.c](src/15_5_marco_variadic_arg.c) 
 >
 > 
 >
@@ -2985,9 +2985,9 @@ C语言数据类型关键字：
 >
 > \#ifdef #else很像C的if else。 两者的主要区别是， 预处理器不识别用于标记块的花括号（{}） ， 因此它使用#else（如果需要） 和#endif（必须存在）来标记指令块。   
 >
-> 示例： [15_6_ifdef.c](src\15_6_ifdef.c) 
+> 示例： [15_6_ifdef.c](src/15_6_ifdef.c) 
 >
->  
+> 
 >
 > **3.3.\#ifndef指令**
 >
@@ -3006,7 +3006,7 @@ C语言数据类型关键字：
 > #endif
 > ```
 >
->  \#ifndef指令通常用于防止多次包含一个文件。  
+> \#ifndef指令通常用于防止多次包含一个文件。  
 >
 > 
 >
@@ -3019,11 +3019,11 @@ C语言数据类型关键字：
 >
 > 示例：
 >
->  
+> 
 >
 > **3.4.#if和#elif指令  **
 >
-> \#if后面跟整型常量表达式， 如果表达式为非零， 则表达式为真。 可以在指令中使用C的关系运算符和逻辑运算符：
+> \#if后面跟**整型常量表达式**， 如果表达式为**非零， 则真**。 可以在指令中使用C的关系运算符和逻辑运算符：
 >
 > 按照if else的形式使用#elif  
 >
@@ -3053,9 +3053,313 @@ C语言数据类型关键字：
 > #endif
 > ```
 >
->   
+> 
 >
 > **3.5.预定义宏**
 >
+> | 宏                 | 含义                                    |
+> | ------------------ | --------------------------------------- |
+> | `__FILE__`         | 当前源码文件名字符串字面量"Mmm dd yyyy" |
+> | `__DATE__`         | 预处理的日期                            |
+> | `__TIME__`         | 代码翻译的时间"hh:mm:ss"                |
+> | `__LINE__`         | 源码文件行号，整型常量                  |
+> | `__STDC__`         | 为1时遵循c标准                          |
+> | `__STDC_HOSTED__`  | 本机环境1，否者0                        |
+> | `__STDC_VERSION__` | 标准版本(C99为199901L,C11为201112L)     |
+> | `__func__`         | 当前函数体的函数名                      |
+>
+> 示例：[15_8_predifined_mac.c](src/15_8_predifined_mac.c) 
+>
 > 
+>
+> **3.6.#line、#error**
+>
+> \#line指令重置`__LINE__`和` _FILE__`宏报告的行号和文件名  
+>
+> ```c
+> #line 1000 // 把当前行号重置为1000
+> #line 10 "cool.c" // 把行号重置为10， 把文件名重置为cool.c
+> ```
+>
+> 
+>
+> \#error 指令让预处理器发出一条错误消息， 该消息包含指令中的文本。如果可能的话， 编译过程应该中断。   
+>
+> ```c
+> #if __STDC_VERSION__ != 201112L
+> #error Not C11
+> #endif
+> ```
+>
+>  
+>
+> **3.7.#pragma**
+>
+> 编译指示（pragma）  
+>
+> \#pragma把编译器指令放入源代码中  
+>
+> 如：\#pragma c9x on  
+>
+> C99还提供_Pragma预处理器运算符， 该运算符把字符串转换成普通的编译指示  
+>
+> _Pragma("nonstandardtreatmenttypeB on")
+> 等价于下面的指令：
+> \#pragma nonstandardtreatmenttypeB on  
+>
+> 
+>
+> C99 标准提供了 3 个标准编译指示:
+>
+> \#pragma STDC FP_CONTRACT on-off-switch
+> \#pragma STDC FENV_ACCESS on-off-switch
+> \#pragma STDC CX_LIMITED_RANGE on-off-switch  
+>
+>  
+>
+> **3.8.泛型选择**
+>
+> C11新增了一种表达式， 叫作泛型选择表达式（generic selection expression）  
+>
+> 可根据表达式的类型（即表达式的类型是int、 double 还是其他类型） 选择一个值  
+>
+> ```c
+> /*
+> 关键字：_Generic
+> 圆括号中表达式用逗号,分隔
+> 第一项是表达式
+> 后面每项由 类型、冒号、值 组成
+> 与switch类似：
+> 如:x是整型就返回0，是float就返回1，是double就返回2，没匹配到就返回默认default的3
+> */
+> _Generic(x, int: 0, float: 1, double: 2, default: 3);
+> ```
+>
+>  示例：[15_9_generic_type.c](src/15_9_generic_type.c) 
+>
+>  
+
+### 4.内联函数
+
+> 函数的调用过程包括建立调用、传递参数、 跳转到函数代码并返回  
+>
+>  使用宏使代码内联， 可以避免这样的开销  
+>
+> C99还提供另一种方法： 内联函数（inline function）  
+>
+> C99和C11标准中叙述的是： “把函数变成内联函数建议尽可能快地调用该函数， 其具体效果由实现定义”。
+>
+>  因此， 把函数变成内联函数， 编译器可能会用内联代码替换函数调用， 并（或） 执行一些其他的优化， 但是也可能不起作用  
+>
+> 
+>
+> 标准规定具有内部链接的函数可以成为内联函数， 还规定了内联函数的定义与调用该函数的代码必须在同一个文件中。   
+>
+> 因此， 最简单的方法是使用**函数说明符`inline` **和存储类别说明符`static`。  
+>
+> ```c
+> inline static void eatline(){ //内联函数定义/原型
+>   while (getchar() != '\n')
+>   continue;
+> }
+> ```
+>
+> 由于并未给内联函数预留单独的代码块， 所以无法获得内联函数的地址  （ 实际上可以获得地址， 不过这样做之后， 编译器会生成一个非内联函数）
+>
+>   
+>
+> 如果程序有多个文件都要使用某个内联函数， 那么这些文件中都必须包含该内联函数的定义。 最简单的做法是， 把内联函数定义放入头文件， 并在使用该内联函数的文件中包含该头文件即可  
+>
+> 一般都不在头文件中放置可执行代码， 内联函数是个特例。 因为内联函数具有内部链接， 所以在多个文件中定义同一个内联函数不会产生什么问题  
+
+### 5._Noreturn
+
+> C11新增了第2个函数说明符`_Noreturn`， 表明调用完成后函数不返回主调函数  
+>
+> exit()函数是_Noreturn 函数的一个示例， 一旦调用exit()， 它不会再返回主调函数  
+>
+> (注意， 这与void返回类型不同。 void类型的函数在执行完毕后返回主调函数，只是它不提供返回值。  )
+>
+> 
+
+### 6.C库
+
+> 1.访问c库
+>
+> 3种方法：a) 自动访问  b) 文件包含  c) 库包含
+>
+> 
+>
+> 2.数学库math.h
+>
+> 示例1： [15_10_rect_pol_.c](src/15_10_rect_pol_.c) 
+>
+> 示例2： [15_11_generic.c](src/15_11_generic.c) 
+>
+> 
+>
+> tgmath.h 库 头文件中定义了泛型类型宏  ，与 [15_11_generic.c](src/15_11_generic.c) 类似
+>
+> 如果在math.h中为一个函数定义了3种类型（float、 double和longdouble） 的版本， 那么tgmath.h文件就创建一个泛型类型宏， 与原来 double版本的函数名同名。
+>
+> 例如， 根据提供的参数类型， 定义 sqrt()宏展开为sqrtf()、 sqrt()或 sqrtl()函数  
+>
+> 
+>
+> 如果包含了tgmath.h， 要调用sqrt()函数而不是sqrt()宏， 可以用圆括号把被调用的函数名括起来  
+>
+> ```c
+> #include <tgmath.h>
+> ...
+> float x = 44.0;
+> double y;
+> y = sqrt(x); // 调用宏， 所以是 sqrtf(x)
+> y = (sqrt)(x); // 调用函数 sqrt()
+> ```
+>
+> 
+>
+> 3.通用工具库stdlib.h
+>
+> exit()函数 退出系统，main()返回系统时将自动调用exit()函数  
+>
+> atexit()函数通过退出时注册被调用的函数  
+>
+> 示例： [15_12_atexit.c](src/15_12_atexit.c) 
+>
+> 
+>
+> qsort函数，排序:
+>
+> `void qsort(void *base, size_t nmemb, size_t size,int (*compar)(const void *, const void *));  `
+>
+> 第1个参数是指针， 指向待排序数组的首元素  
+>
+> 第2个参数是待排序项的数量  
+>
+> 第 3 个参数 显式指明待排序数组中每个元素的大小  
+>
+> 第4个参数是排序比较函数
+>
+> 示例： [15_13_qsorter.c](src/15_13_qsorter.c) 
+>
+> 
+>
+> 4.断言assert.h  
+>
+> 示例： [15_14_assert.c](src/15_14_assert.c) 
+>
+> 可以用\#define NDEBUG  关闭assert
+>
+> assert()表达式是在运行时进行检查  
+>
+> 
+>
+> C11新增了一个特性：`_Static_assert`声明， 可以在编译时检查assert()表达式。
+>
+> `_Static_assert()`接受两个参数。 
+>
+> 第1个参数是整型常量表达式， 第2个参数是一个字符串。 
+>
+> 如果第 1 个表达式求值为 0（或_False） ， 编译器会显示字符串， 而且不编译该程序。     
+>
+> 示例： [15_15_Static_assert.c](src/15_15_Static_assert.c) (编译将报错)
+>
+> `_Static_assert`要求它的第1个参数是整型常量表达式， 这保证了能在编
+> 译期求值（sizeof表达式被视为整型常量） 。 不能用示例中的assert
+> 代替`_Static_assert`， 因为assert中作为测试表达式的z > 0不是常量表达式， 要
+> 到程序运行时才求值。 
+>
+> 
+>
+> 5.string.h库
+>
+> 不能把一个数组赋给另一个数组， 所以要通过循环把数组中的每个元素赋给另一个数组相应的元素。
+>
+> 可以使用strcpy()和strncpy()函数来处理字符数组     
+>
+> memcpy()和memmove()函数提供类似的方法处理任意类型的数组  
+>
+> `void *memcpy(void * restrict s1, const void * restrict s2, size_t n);  `
+>
+> `void *memcpy(void * restrict s1, const void * restrict s2, size_t n);  `
+>
+> 
+>
+> 这两个函数都从 s2 指向的位置拷贝 n 字节到 s1 指向的位置， 而且都返回 s1 的值。 
+>
+> 所不同的是， memcpy()的参数带关键字restrict， 即**memcpy()假设两个内存区域之间没有重叠**； 而memmove()不作这样的假设，   
+>
+> 示例： [15_16_memcpy_move.c](src/15_16_memcpy_move.c) 
+>
+> 
+>
+> 6.可变参数stdarg.h   
+>
+> stdarg.h 头文件为函数提供了可变参数的功能， 但是用法比较复杂  
+>
+> 必须按如下步骤进行：
+>
+> step1.提供一个使用省略号的函数原型；
+> step2.在函数定义中创建一个va_list类型的变量；
+> step3.用宏把该变量初始化为一个参数列表；
+> step4.用宏访问参数列表；
+> step5.用宏完成清理工作。 
+>
+>  
+>
+> **函数原型** 
+>
+>   ```c
+>   void f1(int n, ...); // 有效,省略部分有n个参数
+>   int f2(const char * s, int k, ...); // 有效,省略部分有k个参数
+>   char f3(char c1, ..., char c2);// 无效， 省略号不在最后
+>   double f3(...); // 无效， 没有形参
+>   ```
+>
+> 最右边的形参（即省略号的前一个形参）是省略号部分代表的参数数量  
+>
+>  
+>
+> ```c
+> double sum(int lim,...){  
+> va_list ap; //声明一个储存参数的对象
+> va_start(ap, lim); // 把ap初始化为参数列表
+> 
+> double tic;
+> int toc;
+> ...
+> tic = va_arg(ap, double); // 检索第1个参数
+> toc = va_arg(ap, int); //检索第2个参数
+> 
+> 
+> // 清理工作,
+> va_end(ap);   
+> ```
+>
+> 因为va_arg()不提供退回之前参数的方法， 所以有必要保存va_list类型变量的副本。
+>
+> C99新增了一个宏用于处理这种情况： va_copy()。 该宏接受两个va_list类型的变量作为参数， 它把第2个参数拷贝给第1个参数 
+>
+> ```c
+> va_list ap;
+> va_list apcopy;
+> double
+> double tic;
+> int toc;
+> ...
+> va_start(ap, lim); // 把ap初始化为一个参数列表
+> va_copy(apcopy, ap); // 把apcopy作为ap的副本
+> tic = va_arg(ap, double); // 检索第1个参数
+> toc = va_arg(ap, int); // 检索第2个参数
+> /*此时， 即使删除了ap， 也可以再从apcopy中检索两个参数。*/
+> ```
+>
+>  
+>
+> 示例： [15_17_function_varargs.c](src/15_17_function_varargs.c) 
+
+
+
+
 
