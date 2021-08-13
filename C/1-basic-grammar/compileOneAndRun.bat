@@ -87,9 +87,10 @@ set DEFINE_OPT=/D"C_R_MODE=1"
 ::@rem 如果未找到字节顺序标记，则假定源文件使用当前用户代码页进行编码，除非您已使用 /utf-8 或 /source-charset 选项指定了代码页。  
 ::@rem /source-charset:%srcCharset% /execution-charset:%srcCharset%  
 ::@rem  warning C4819: The file contains a character that cannot be represented in the current code page ^(0^)  
-::@rem C4819字符警告在设了/execution-charset:utf-8,且汉字数量为奇数，没法去掉，只好通过/wd4819禁用该告警   
+::@rem C4819字符警告在设了/execution-charset:utf-8,且汉字数量为奇数，没法去掉，只好通过/wo4819只显示一次该告警
 ::禁用5045告警，已配置/Qspectre防止cpu预测执行 
-set _CL_OPT=/Gy %DEFINE_OPT% /Wall /wd4819  /wd5045 /Qspectre /source-charset:utf-8 /execution-charset:%srcCharset%  "%srcFile%" /I include /Fo"%tgexe%" /Fe"%tgexe%" /std:c11 /nologo /link %LIB_DEPENDS% /SUBSYSTEM:CONSOLE
+
+set _CL_OPT=/Gy %DEFINE_OPT% /Wall /wo4819 /wd5045 /Qspectre /source-charset:utf-8 /execution-charset:%srcCharset%  "%srcFile%" /I include /Fo"%tgexe%" /Fe"%tgexe%" /std:c11 /nologo /link %LIB_DEPENDS% /SUBSYSTEM:CONSOLE
 @rem /DEFAULTLIB:lib\10_5_s_gets_lib.lib
 echo 【环境变量INCLUDE】==^> %INCLUDE%
 echo.
