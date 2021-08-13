@@ -17,3 +17,10 @@ int数据 0x12345678
 IANA字符集、ISO字符集/IANA charset name
 UTF-16BE
 UTF-16LE
+
+BOM
+UTF-16（小端）    BOM为FF FE
+UTF-16（大端）    BOM为FE FF
+UTF-32小端        BOM为FFFE0000，
+UTF-32大端        BOM为0000FEFF。
+UTF-8带BOM文件    BOM为EF BB BF。
