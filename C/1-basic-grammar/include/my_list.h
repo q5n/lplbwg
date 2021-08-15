@@ -1,5 +1,6 @@
 #ifndef MY_LIST_H_
 #define MY_LIST_H_
+#pragma  message("include my_list.h!")
 
 #include <stdbool.h>
 
