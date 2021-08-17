@@ -163,6 +163,18 @@ bool AddItem(const Item * pi, Tree * ptree){
         fprintf(stderr, "Attempted to add duplicate item\n");
         return false; /* 提前返回 */
     }
+    
+    new_node = MakeNode(pi); /* 指向新节点 */
+    if (new_node == NULL){
+        fprintf(stderr, "Couldn't create node\n");
+        return false; /* 提前返回 */
+    } /* 成功创建了一个新节点 */
+    ptree->size++;
+    if (ptree->root == NULL) /* 情况1： 树为空 */
+        ptree->root = new_node; /* 新节点为树的根节点 */
+    else /* 情况2： 树不为空 */
+        AddNode(new_node, ptree->root);/* 在树中添加新节点 */
+    return true; /* 成功返回 */
 }
 
 /* 操作： 在树中查找一个项 */
@@ -171,6 +183,7 @@ bool AddItem(const Item * pi, Tree * ptree){
 /* 后置条件： 如果在树中添加一个项， 该函数返回true */
 /* 否则， 返回false */
 bool InTree(const Item * pi, const Tree * ptree){
+    return SeekItem(pi, ptree).child != NULL;
 }
 
 /* 操作： 从树中删除一个项 */
@@ -179,6 +192,18 @@ bool InTree(const Item * pi, const Tree * ptree){
 /* 后置条件： 如果从树中成功删除一个项， 该函数返回true*/
 /* 否则， 返回false */
 bool DeleteItem(const Item * pi, Tree * ptree){
+    Pair look;
+    look = SeekItem(pi, ptree);
+    if (look.child == NULL)
+        return false;
+    if (look.parent == NULL) /* 删除根节点项 */
+        DeleteNode(&ptree->root);
+    else if (look.parent->left == look.child)
+        DeleteNode(&look.parent->left);
+    else
+        DeleteNode(&look.parent->right);
+    ptree->size--;
+    return true;
 }
 
 /* 操作： 把函数应用于树中的每一项 */
@@ -187,12 +212,19 @@ bool DeleteItem(const Item * pi, Tree * ptree){
 /* 该函数接受一个Item类型的参数， 并无返回值*/
 /* 后置条件： pfun指向的这个函数为树中的每一项执行一次*/
 void Traverse(const Tree * ptree, void(*pfun)(Item item)){
+    if(ptree != NULL)
+        InOrder(ptree->root, pfun);
 }
 
 /* 操作： 删除树中的所有内容 */
 /* 前提条件： ptree指向一个已初始化的树 */
 /* 后置条件： 树为空 */
 void DeleteAll(Tree * ptree){
+    if(ptree != NULL)
+        DeleteAllNodes(ptree->root);
+    ptree->root = NULL;
+    ptree->size = 0;
+    
 }
 
 
