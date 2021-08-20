@@ -2,5 +2,11 @@
 
 教程参考：https://www.parallelrealities.co.uk/tutorials/
 
-## 一、 2d射击游戏
+[Lazy Foo' Productions - Beginning Game Programming v2.0](https://lazyfoo.net/tutorials/SDL/index.php)
+
+
+
+## 1.Hello SDL
+
+
 

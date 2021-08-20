@@ -1,5 +1,7 @@
 # 环境准备
 
+## 一、MSVC
+
 1. 操作系统 Windows 10
 
 2. 编译器[Visual Studio Community 2019](https://visualstudio.microsoft.com/vs/community/)
@@ -22,4 +24,26 @@
 6.  [C语言帮助文档](https://docs.microsoft.com/cpp/c-language/)
 
  
+
+## 二、mingw-w64
+
+1.通过msys2安装mingw-w64
+
+[MSYS2](https://www.msys2.org/)是一个工具集环境，作用是：可以在windows中使用linux中的shell、工具或命令。
+
+把linux下的工具程序的源码编译成windows的可执行文件
+
+
+
+可以看作windows下的linux子环境，与wsl1有点类似。
+
+基本原理是：基于[Cygwin项目](https://cygwin.com/)的cygwin1.dll在windows上提供 linux系统所需的POSIX API接口
+
+在windows系统上基于一套翻译接口调用linux的
+
+原理linux程序大多都调用
+
+
+
+
 
