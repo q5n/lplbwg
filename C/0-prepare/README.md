@@ -43,7 +43,5 @@
 
 原理linux程序大多都调用
 
-
-
-
+笔记:[minGw-w64笔记.txt](minGw-w64笔记.txt)
 

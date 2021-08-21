@@ -1,0 +1,77 @@
+
+MinGW-w64 wiki (https://sourceforge.net/p/mingw-w64/wiki2/Home/)
+
+
+msys2
+
+MSYS
+
+
+Cygwin文章:
+https://zhuanlan.zhihu.com/p/56572298
+
+
+Cygwin是一个可原生运行于Windows系统上的POSIX兼容环境
+    通过cygwin1.dll提供POSIX接口（最终调用win内核）
+MinGW是一个自由开源的最小开发工具集
+    （gcc、软件包管理器（mingw-get），mingw-binutils、mingw-make，用于开发Windows原生程序）
+    不依赖posix
+MSYS基于bash的命令行系统
+    用于替代Windows中的cmd.exe
+
+
+更优版：MinGW-w64 + MSYS2 + minitty
+
+Mintty
+    开源终端，“终端模拟器（Terminal Emulator）”，顾名思义，它就是用来模拟终端的，但是终端自身仅具有基本输入输出能力，并不会执行程序指令
+
+
+<Target>[-Version]-<Src/Bin>-<Host>[-Cygwin Version]_<Date Code>[_personal tag].[extension]
+
+posix: 启用 c++11/c11多线程功能。 依赖于 libwinpthreads，即使你不直接调用 API，也将分发给 winpthreads 。 使用应用程序分发一个DLL没有什么问题。
+win32: 没有C++11多线程功能。
+对任何调用 Win32 api或者 pthreads api的代码都不影响。 你可以同时使用。
+
+C本身的错误处理风格是 error code。这个风格和 exception 的争论由来已久。我个人倾向于不使用 exception
+   
+
+ 在C语言中异常处理一般有这么几种方式：
+1.使用标准C库提供了abort()和exit()两个函数，它们可以强行终止程序的运行，其声明处于<stdlib.h>头文件中。
+2.使用assert(断言)宏调用，位于头文件<assert.h>中，当程序出错时，就会引发一个abort（）。
+3.使用errno全局变量，由C运行时库函数提供，位于头文件<errno.h>中。
+4.使用goto语句，当出错时跳转。
+5.使用setjmp,longjmp进行异常处理。(https://bugreports.qt.io/browse/QTBUG-29653)有性能问题
+
+
+异常处理
+SEH (zero overhead exception)
+
+mingw 3种异常处理模型：(https://wiki.qt.io/MinGW-64-bit#Exception_handling:_SJLJ.2C_DWARF.2C_and_SEH)
+
+SJLJ (setjmp/longjmp): 支持32位、64位，有开销(15%?)
+DWARF (DW2, dwarf-2):仅支持32位,异常不能抛出？例如：windows系统调用dll
+SEH (zero overhead exception) :仅支持64位,windows特有
+
+
+Gcc线程模型(posix vs win32)
+    posix(建立在 MinGW-w64 的 winpthreads 之上)
+        win32 的 POSIX 线程的实现（实验性质的），它的主要目标是支持 C+11 标准线程
+        启用包含在头文件 <thread>、<mutex> 和 <future> 中的 C11 库功能
+        特定场景下性能下降，性能低于本地win32实现，甚至低于msvs2012实现
+    win32
+        使用本地Win32线程函数
+        没有C11 <thread>、<mutex> 或 <future>
+        性能最佳
+
+
+
+我的选择(基于跨平台考虑)：
+    1.只用于c语言，先基于error code风格处理异常。(实在要使用异常处理时：SJLJ可以跨平台,SEH只有windows有)
+    2.对于多线程能用就行，跨平台优先(posix跨平台，依赖winpthreads可静态编译，本地Win32线程需要时再考虑）
+
+所以优先选择：
+MinGW-W64 GCC-8.1.0：x86_64-posix-sjlj
+    考虑性能时（下载x86_64-win32-seh备用）
+
+
+
