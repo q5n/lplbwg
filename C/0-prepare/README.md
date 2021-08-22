@@ -45,3 +45,7 @@
 
 笔记:[minGw-w64笔记.txt](minGw-w64笔记.txt)
 
+
+
+[Mingw-w64 - GCC for Windows 64 & 32 bits [mingw-w64\]](http://mingw-w64.org/doku.php)
+
