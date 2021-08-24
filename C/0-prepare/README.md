@@ -59,23 +59,88 @@ unix命令行工具一般是基于shell运行的，所以连shell也要一起编
 
 可以在[MSYS2](https://www.msys2.org/)首页直接下载`msys2-x86_64-20xxxxxx.exe`安装,也可以直接用[压缩包安装MSYS2](https://www.msys2.org/wiki/MSYS2-installation/)
 
-[msys2分发库](http://repo.msys2.org/distrib/)下有可以选的安装文件
+[msys2分发库](http://repo.msys2.org/distrib/)下有可以选的安装文件:
 
 ![msy2-distrib-repo](img/msy2-distrib-repo.png)
 
 64位系统选`msys2-x86_64-latest.tar.xz`,解压后有一个msys64文件夹,可以将其放到d盘根目录
 
-第一次启动时可以运行msys64下的msys2_shell.cmd脚本，会有一个初始化的过程
-
-脚本默认以 **MSYS**的Shell环境 和 mintty终端启动 msys2。
 
 
+#### 2.1.启动msys2
 
-msys2中有5个子系统,对应pacman包管理器中的5个库
+第一次启动时可以运行msys64下的`msys2_shell.cmd`脚本，会有一个初始化的过程；脚本默认以 **MSYS**的Shell环境 和 mintty终端启动 msys2:
+
+```shell
+# msys2_shell.cmd脚本最终默认执行以下命令：
+start "MSYS2 MSYS" "%WD%mintty" -i "/msys2.ico" -t "MSYS2 MSYS" "/usr/bin/bash" --login !SHELL_ARGS!
+# 命令解释：
+# start是windows内置的启动新窗口的命令;"MSYS2 MSYS" 是start参数，启动窗口标题;后面跟的启动命令
+# "%WD%mintty" ==> %WD%是msys可执行文件目录，mintty其下的可执行程序，用于开启一个终端窗口
+# -i "/msys2.ico" -t "MSYS2 MSYS" 是mintty的参数，分别指定终端窗口左上角的：icon图标 和标题
+# "/usr/bin/bash" --login !SHELL_ARGS! 是在mintty终端执行的bash程序，
+# --login是bash启动参数,表示bash要以登录方式启动，它将执行/etc/profile里的命令，然后查找~/.bash_profile、 ~/.bash_login、~/.profile中存在并可读的第一个文件，执行里面的命令。退出时会执行~/.bash logout
+# !SHELL_ARGS!变量是cmd脚本透传给bash的参数
+```
 
 
 
+shell(usr\bin\bash.exe)依赖三个环境变量：
+
+1. CHERE_INVOKING 有值时，进入后bash会切换到当前目录
+2. MSYS2_PATH_TYPE 控制进入后bash后：环境变量PATH的值，可选3个值:
+	**strict**  只留msys2相关bin目录到PATH环境变量
+	**minimal**  在strict基础上，保留了windows系统程序的路径，如/c/Windows/System32:/c/Windows等
+	**inherit**  在strict基础上，继承了windows系统的PATH环境变量
+3. MSYSTEM 切换进入bash后的子系统环境，可选值：MSYS|CLANG64|UCRT64|MINGW64|MINGW32
+	默认MSYS
 
 
 
+msys2中5个子系统环境(对应pacman包管理器中的5个库):
 
+| 环境名/包库名 | 系统前缀 | 系统架构 | 系统HOST           | 工具链 | 包名前缀               | C库/C++库        |
+| ------------- | -------- | -------- | ------------------ | ------ | ---------------------- | ---------------- |
+| MSYS          | /usr     | x86_64   | x86_64-pc-msys     | gcc    | 无                     | cygwin/libstdc++ |
+| MINGW64       | /mingw64 | x86_64   | x86_64-w64-mingw32 | gcc    | mingw-w64-x86_64       | msvcrt/libstdc++ |
+| UCRT64        | /ucrt64  | x86_64   | x86_64-w64-mingw32 | gcc    | mingw-w64-ucrt-x86_64  | ucrt/libstdc++   |
+| CLANG64       | /clang64 | x86_64   | x86_64-w64-mingw32 | llvm   | mingw-w64-clang-x86_64 | ucrt/libc++      |
+| MINGW32       | /mingw32 | i686     | i686-w64-mingw32   | gcc    | mingw-w64-i686         | msvcrt/libstdc++ |
+
+各子环境不同的环境变量：
+
+PATH(应用路径)、ACLOCAL_PATH、MANPATH、PKG_CONFIG_PATH、XDG_DATA_DIRS
+
+MSYSTEM(子环境名)、MSYSTEM_CARCH(系统架构)、MSYSTEM_CHOST(系统平台HOST)、MSYSTEM_PREFIX(子系统文件前缀目录)
+
+MINGW_CHOST(MINGW平台名)、MINGW_PACKAGE_PREFIX(MINGW安装包前缀)、MINGW_PREFIX(MINGW文件前缀目录)、MINGW_MOUNT_POINT(mingw挂载点)
+
+
+
+根据不同环境要求，后续可以用clang64.exe/mingw32.exe/mingw64.exe/msys2.exe/ucrt64.exe启动该msys环境
+
+
+
+2.2 包管理工具pacman
+
+第一次安装后，运行`pacman -Syu` 更新系统包；运行`pacman -Su` 更新基础包
+
+`pacman -Sy`只同步各包库的数据文件，不下载、更新或安装具体的应用
+
+
+
+安装新包：`pacman -S <package_names|package_groups>`
+
+移除包：`pacman -R <package_names|package_groups>`
+
+搜索包：`pacman -Ss <name_pattern>`
+
+搜索已安装的包：`pacman -Qs <name_pattern>`
+
+查看包信息(包含依赖)：`pacman -Si <name_pattern>`
+
+查看已安装包信息(包含依赖)：`pacman -Qi <name_pattern>`
+
+
+
+2.3 安装gcc
