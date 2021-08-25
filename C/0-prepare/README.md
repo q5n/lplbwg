@@ -121,7 +121,7 @@ MINGW_CHOST(MINGW平台名)、MINGW_PACKAGE_PREFIX(MINGW安装包前缀)、MINGW
 
 
 
-2.2 包管理工具pacman
+#### 2.2 包管理工具pacman
 
 第一次安装后，运行`pacman -Syu` 更新系统包；运行`pacman -Su` 更新基础包
 
@@ -143,4 +143,73 @@ MINGW_CHOST(MINGW平台名)、MINGW_PACKAGE_PREFIX(MINGW安装包前缀)、MINGW
 
 
 
-2.3 安装gcc
+#### 2.3 安装gcc
+
+a) 直接搜索`pacman -Ss gcc`
+
+![pacam-search-gcc](img/pacam-search-gcc.png)
+
+​	我这选择/ucrt64环境，相应包前缀为  mingw-w64-ucrt-x86_64，所以相应gcc是mingw-w64-ucrt-x86_64-gcc
+
+b) 更详细信息通过`pacman -Si mingw-w64-ucrt-x86_64-gcc`命令查看
+
+c) 安装命令:`pacman -S mingw-w64-ucrt-x86_64-gcc`,需要确认时选Y
+
+​	gcc.exe被安装到/ucrt64/bin目录下, 所以可以从ucrt64.exe启动环境
+
+d) 编译命令:`gcc hw.c`
+
+```c
+/* hw.c 源码*/
+#include <stdio.h>
+int main(void){
+    printf("Hello World!");
+}
+```
+
+若安装成功，则会生成a.exe文件，执行a.exe输出`Hello World!`
+
+
+
+## 三、gcc编译
+
+### 1.编译过程：预处理、编译、汇编、链接
+
+**1.1.预处理**：`选项-E`代表只作预处理( Preprocess only)，接收c源文件作为参数
+
+```bash
+#这条命令会把预处理结果输出到标准输出(终端显示器)
+gcc -E hw.c
+
+#选项-o会指定输出到文件，即把对hw.c的预处理结果输出到hw.i文件
+gcc -E hw.c -o hw.i
+```
+
+处理做了什么：①处理预编译指令(宏展开，处理条件编译指令，处理文件包含)；删除所有注释；②添加行号和文件名标识；③保留#progma指令供编译器使用
+
+**1.2.编译**：`选项-S`代表只作编译( Compile only)，接收预处理后的文件或c源文件作为参数
+
+```bash
+#编译预处理后的文件，省略选项-o时也会输出hw.s文件
+gcc -S hw.i -o hw.s
+
+#也可直接接收c源文件作为参数
+gcc -S hw.c -o hw.s
+```
+
+编译过程就是把预处理完的文件进行词法分析、语法分析、语义分析、以及优化后台生成相应**汇编代码文件**
+
+**1.3汇编**：`选项-c`代表只作汇编编译( Compile and assemble)，接收编译后的汇编代码文件或c源文件作为参数
+
+```bash
+#将编译后的汇编代码文件经行汇编，省略选项-o时也会输出hw.o文件
+gcc -c hw.s -o hw.o
+
+#也可直接接收c源文件作为参数
+gcc -c hw.c -o hw.o
+```
+
+将汇编源码转变成机器可执行的指令,每一条汇编语句几乎都对应一条机器指令。生成一个**目标文件(object file)**
+
+**1.4链接**:
+
